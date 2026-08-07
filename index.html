@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>銀髮族差異化運動指導實務 | 護你健康-延緩失智失能 (CL-01-0494)</title>
+    <style>
+        :root {
+            --primary-color: #2E7D32; /* 專業健康綠 */
+            --secondary-color: #E8F5E9;
+            --accent-color: #FF9800;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+        }
+
+        body {
+            color: var(--text-dark);
+            line-height: 1.6;
+            background-color: #f9f9f9;
+        }
+
+        /* 導覽列 */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .logo span {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: block;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-left: 1.5rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero 區塊 */
+        .hero {
+            background: linear-gradient(rgba(46, 125, 50, 0.88), rgba(46, 125, 50, 0.88)), url('https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&w=1200&q=80') center/cover;
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+
+        .hero h1 {
+            font-size: 2.3rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .hero .badge {
+            background-color: var(--accent-color);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            text-align: justify;
+            text-justify: inter-ideograph;
+            line-height: 1.8;
+        }
+
+        .hero-time-fee {
+            background: rgba(255, 255, 255, 0.15);
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            text-align: left;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 0.8rem 2.5rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #e68a00;
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* 內容區塊通用 */
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            display: block;
+            margin: 0.5rem auto 0;
+        }
+
+        /* 費用與地點亮點卡片 */
+        .fee-card-container {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+
+        .fee-card {
+            background: var(--white);
+            border: 2px solid var(--secondary-color);
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            max-width: 450px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .fee-card.highlight {
+            border-color: var(--primary-color);
+            background: #f4fbf4;
+        }
+
+        .fee-card h4 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .fee-card .price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin: 0.5rem 0;
+        }
+
+        /* 課程目標清單 */
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .goal-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        /* 課程大綱區塊 */
+        .outline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .outline-box {
+            background: var(--white);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+        }
+
+        .outline-header {
+            background-color: var(--secondary-color);
+            padding: 1rem 1.5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            border-bottom: 1px solid #c8e6c9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .outline-header span {
+            background: var(--primary-color);
+            color: var(--white);
+            font-size: 0.85rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .outline-body {
+            padding: 1.5rem;
+        }
+
+        .outline-body ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+
+        .outline-body li {
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        /* 報名表單 */
+        .registration-container {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        /* 頁尾 */
+        footer {
+            background-color: var(--text-dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            nav a {
+                margin: 0 0.5rem;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 導覽列 -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                護你健康-延緩失智失能
+                <span>模組編號：CL-01-0494｜指導員培訓課程</span>
+            </div>
+            <nav>
+                <a href="#summary">課程摘要</a>
+                <a href="#fee-info">費用與地點</a>
+                <a href="#outline">課程大綱</a>
+                <a href="#register">線上報名</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero 區塊 -->
+    <div class="hero">
+        <span class="badge">指導員專業回訓課程</span>
+        <h1>銀髮族差異化運動指導實務</h1>
+        <p>本課程專為模組指導員設計，深度解析差異化教學的核心概念與實務應用，提升銀髮族運動指導的專業能力與效益。培養帶領長照據點銀髮族運動的實務應變能力，促進長輩身心健康！</p>
+        
+        <div class="hero-time-fee">
+            📍 <strong>上課地點：</strong>護理師公會教室<br>
+            📅 <strong>上課時間：</strong>8/31 (一) 09:00 - 16:00 (共 6 小時)<br>
+            💰 <strong>回訓費用：</strong>NT$ 1,500（具模組資格且應用於場域者<strong>免費</strong>）
+        </div>
+        <br>
+        <a href="#register" class="btn">立即報名回訓</a>
+    </div>
+
+    <!-- 課程摘要與費用資訊 -->
+    <section id="summary">
+        <h2 class="section-title">課程簡介與開課資訊</h2>
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+            課程內容涵蓋銀髮族身心特點評估、運動能力分級、進退階方案設計，以及如何因應不同環境、器材及人數規模彈性調整運動內容。同時著重於運動安全管理與突發狀況應變，確保學員能安全、有效地帶領長輩進行運動訓練。
+        </p>
+
+        <!-- 費用與地點資訊 -->
+        <div id="fee-info" class="fee-card-container">
+            <div class="fee-card">
+                <h4>回訓標準費用</h4>
+                <div class="price">NT$ 1,500 / 人</div>
+                <p>一般回訓學員、欲提升銀髮指導專業實務能力者。</p>
+            </div>
+            <div class="fee-card highlight">
+                <h4>🎁 特殊優惠專案</h4>
+                <div class="price" style="color: #2E7D32;">免費優惠</div>
+                <p><strong>適用條件：</strong>具備模組資格，且目前有實際應用於長照/社區場域者。</p>
+            </div>
+        </div>
+
+        <h3 id="goals" style="color: var(--primary-color); margin-bottom: 1.5rem; text-align: center;">核心學習目標</h3>
+        <div class="goals-grid">
+            <div class="goal-card">
+                📌 深入理解差異化教學在銀髮族運動訓練中的關鍵作用與應用策略。
+            </div>
+            <div class="goal-card">
+                📌 精準掌握銀髮族身體狀況評估與運動能力分級技巧，奠定個別化運動基礎。
+            </div>
+            <div class="goal-card">
+                📌 依長輩身體狀況與功能限制，設計多元且具挑戰性的運動進階與退階方案。
+            </div>
+            <div class="goal-card">
+                📌 提升因應不同物理環境、器材設施及人數規模靈活調整內容的應變能力。
+            </div>
+            <div class="goal-card">
+                📌 強化長照據點運動指導的安全風險評估、即時觀察與突發狀況應變能力。
+            </div>
+            <div class="goal-card">
+                📌 培養優質動作示範、清晰口語指令與肢體回饋技巧，提升長輩參與度。
+            </div>
+        </div>
+    </section>
+
+    <!-- 課程大綱 -->
+    <section id="outline" style="background-color: #f0f7f0;">
+        <h2 class="section-title">課程大綱 (8/31 09:00 - 16:00 共 6 小時)</h2>
+        <div class="outline-container">
+            
+            <!-- 單元 1 -->
+            <div class="outline-box">
+                <div class="outline-header">
+                    1. 差異化教學核心概念與銀髮族運動趨勢
+                    <span>1 小時 (09:00 - 10:00)</span>
+                </div>
+                <div class="outline-body">
+                    <ul>
+                        <li>什麼是差異化教學？為何在銀髮族運動中如此重要？</li>
+                        <li>銀髮族運動生理與心理特點概覽：從理論到實務</li>
+                        <li>銀髮族運動指導的最新趨勢與挑戰</li>
+                        <li>活動暖身與破冰：建立學習氛圍</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 單元 2 -->
+            <div class="outline-box">
+                <div class="outline-header">
+                    2. 銀髮族運動能力評估與分級
+                    <span>1 小時 (10:00 - 11:00)</span>
+                </div>
+                <div class="outline-body">
+                    <ul>
+                        <li>長輩身體狀況快速評估技巧與工具應用</li>
+                        <li>基礎體能與功能性評估項目</li>
+                        <li>跌倒風險評估與認知功能觀察</li>
+                        <li>運動能力分級：從初階到高階的分流策略</li>
+                        <li>個案分析與實務演練：評估資料判讀與分級應用</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 單元 3 -->
+            <div class="outline-box">
+                <div class="outline-header">
+                    3. 運動進退階設計與教學技巧
+                    <span>2 小時 (11:00 - 12:00 / 13:00 - 14:00)</span>
+                </div>
+                <div class="outline-body">
+                    <ul>
+                        <li><strong>坐姿運動差異化應用：</strong>強化核心與平衡、多元坐姿變化與難度調整、結合呼吸與動作進階練習。</li>
+                        <li><strong>站姿與輔助站姿差異化：</strong>提升下肢肌力與穩定性、輔助站姿漸進訓練、進階站姿平衡與協調訓練。</li>
+                        <li><strong>動作難度調整策略：</strong>強度/頻率/時間/組數變化、器材輔助與阻力調整、動作速度與範圍控制。</li>
+                        <li><strong>教學技巧：</strong>清晰簡潔的口語指令設計、有效的肢體回饋與觸摸引導、常見錯誤動作辨識與糾正。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 單元 4 -->
+            <div class="outline-box">
+                <div class="outline-header">
+                    4. 環境、器材與人數的彈性運用
+                    <span>1 小時 (14:00 - 15:00)</span>
+                </div>
+                <div class="outline-body">
+                    <ul>
+                        <li>空間大小的應對策略：室內外場地的靈活運用</li>
+                        <li>有/無器材的運動設計：發揮創意，就地取材（日常物品應用、簡易運動器材選擇）</li>
+                        <li>人數差異的教學應變：大型團體與小組教學的策略調整</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 單元 5 -->
+            <div class="outline-box">
+                <div class="outline-header">
+                    5. 運動安全管理與突發狀況應變
+                    <span>1 小時 (15:00 - 16:00)</span>
+                </div>
+                <div class="outline-body">
+                    <ul>
+                        <li>運動前的風險評估與篩檢：禁忌症與注意事項</li>
+                        <li>運動中的觀察與即時調整：身體訊號的判讀</li>
+                        <li>突發狀況的應變流程與緊急處理：跌倒、暈眩、心臟不適等</li>
+                        <li>據點運動指導的倫理與法律責任</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 線上報名系統 -->
+    <section id="register">
+        <h2 class="section-title">指導員回訓線上報名系統</h2>
+        <div class="registration-container">
+            <form id="enrollmentForm" onsubmit="handleSubmit(event)">
+                
+                <div class="form-group">
+                    <label>課程地點與時間</label>
+                    <input type="text" value="護理師公會教室（8/31 一 09:00 - 16:00）" disabled style="background-color: #eee;">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">學員姓名 *</label>
+                    <input type="text" id="name" placeholder="請輸入真實姓名" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="identity">參訓身份 *</label>
+                    <select id="identity" required>
+                        <option value="">請選擇身分...</option>
+                        <option value="CL-01-0494模組合格指導員">CL-01-0494 模組合格指導員</option>
+                        <option value="長照據點運動指導員/協助人員">長照據點運動指導員/協助人員</option>
+                        <option value="物理治療師/職能治療師/體育專業人員">物理治療師/職能治療師/體育專業人員</option>
+                        <option value="其他長照相關從業人員">其他長照相關從業人員</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="feeDiscount">學費優惠資格評估 *</label>
+                    <select id="feeDiscount" required>
+                        <option value="">請選擇費用身份...</option>
+                        <option value="免費優惠（具模組資格且目前有於場域應用）">免費優惠 (具備模組資格且有於場域應用)</option>
+                        <option value="標準回訓價 NT$ 1,500">標準回訓價 NT$ 1,500</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="organization">目前服務單位 / 應用場域名稱 *</label>
+                    <input type="text" id="organization" placeholder="例如：XX社區照顧關懷據點 / XX巷弄長照站" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">聯絡電話 *</label>
+                    <input type="tel" id="phone" placeholder="例如：0912-345-678" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">電子信箱 *</label>
+                    <input type="email" id="email" placeholder="用於接收行前通知與研習證書" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="note">備註 / 期望在課程中解決的實務問題（選填）</label>
+                    <textarea id="note" rows="3" placeholder="例如：希望能了解長輩下肢肌力退化嚴重的坐姿退階運動..."></textarea>
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%;">送出回訓報名</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- 頁尾 -->
+    <footer>
+        <p>「銀髮族差異化運動指導實務」專業培訓課程｜護你健康-延緩失智失能 (模組編號：CL-01-0494)</p>
+        <p style="font-size: 0.85rem; color: #aaa; margin-top: 0.5rem;">© 2026 版權所有，非授權請勿擅自重製或引用課程教材內容。</p>
+    </footer>
+
+    <!-- JavaScript 串接 Google Apps Script -->
+    <script>
+        const GAS_URL = 'https://script.google.com/macros/s/AKfycbzwWJr0apaOvjjuOBDLV0KrhoMqCg3nbQhqPoBrO4Uwp__eSrYIXeBbmFYyDsSjmVjgEA/exec';
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerText = '資料傳送中...';
+
+            const formData = {
+                courseSession: '8/31 (一) 護理師公會教室研習',
+                name: document.getElementById('name').value,
+                identity: document.getElementById('identity').value,
+                feeDiscount: document.getElementById('feeDiscount').value,
+                organization: document.getElementById('organization').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                note: document.getElementById('note').value
+            };
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    alert(`感謝 ${formData.name} 指導員/學員報名！\n您已成功預約「8/31 銀髮族差異化運動指導實務（地點：護理師公會教室）」。\n選擇方案：${formData.feeDiscount}\n報名資料已成功傳送至後台！`);
+                    document.getElementById('enrollmentForm').reset();
+                } else {
+                    alert('報名失敗：' + (result.message || '請稍後再試或聯繫承辦人員。'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('資料傳送失敗，請確認網路連線或稍後再試！');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '送出回訓報名';
+            }
+        }
+    </script>
+</body>
+</html>
