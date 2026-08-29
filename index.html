@@ -203,6 +203,47 @@
             margin: 0.5rem auto 0;
         }
 
+        /* 講義下載專區卡片 */
+        .material-banner {
+            background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .material-banner h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .material-banner p {
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .btn-material {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.8rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .btn-material:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+        }
+
         /* 費用與地點亮點卡片 */
         .fee-card-container {
             display: flex;
@@ -672,6 +713,7 @@
             </div>
             <nav id="mainNav">
                 <a onclick="switchPage('main'); scrollToSection('summary');">課程摘要</a>
+                <a onclick="switchPage('main'); scrollToSection('materials');">講義下載</a>
                 <a onclick="switchPage('main'); scrollToSection('fee-info');">費用與地點</a>
                 <a onclick="switchPage('main'); scrollToSection('outline');">課程大綱</a>
                 <a onclick="switchPage('main'); scrollToSection('register');">線上報名</a>
@@ -701,9 +743,19 @@
             </div>
         </div>
 
-        <!-- 課程摘要與費用資訊 -->
+        <!-- 課程摘要與講義下載區塊 -->
         <section id="summary">
-            <h2 class="section-title">課程簡介與開課資訊</h2>
+            <h2 class="section-title">課程簡介與上課講義</h2>
+            
+            <!-- 講義下載專區 -->
+            <div id="materials" class="material-banner">
+                <h3>📖 課程指定參考講義</h3>
+                <p>學員可點擊下方按鈕前往 Google 雲端硬碟線上閱讀或下載完整上課講義（PDF檔）：</p>
+                <a href="https://drive.google.com/file/d/1t3S_Bb1TY-xnZtWicD6L8x5c4gZnTUeU/view?usp=sharing" target="_blank" class="btn-material">
+                    📥 下載 / 檢視《銀髮族差異化運動指導實務》講義
+                </a>
+            </div>
+
             <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
                 課程內容涵蓋銀髮族身心特點評估、運動能力分級、進退階方案設計，以及如何因應不同環境、器材及人數規模彈性調整運動內容。同時著重於運動安全管理與突發狀況應變，確保學員能安全、有效地帶領長輩進行運動訓練。
             </p>
@@ -950,7 +1002,7 @@
                         <tr>
                             <th>測驗時間</th>
                             <th>學員姓名</th>
-                            <th>服務單位 / 學號</th>
+                            <th>服務單位/學號</th>
                             <th>答對題數</th>
                             <th>課前成績</th>
                         </tr>
