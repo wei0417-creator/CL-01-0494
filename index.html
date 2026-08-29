@@ -7,11 +7,14 @@
     <style>
         :root {
             --primary-color: #2E7D32; /* 專業健康綠 */
+            --primary-hover: #1b5e20;
             --secondary-color: #E8F5E9;
             --accent-color: #FF9800;
+            --accent-hover: #e68a00;
             --text-dark: #333333;
             --text-light: #666666;
             --white: #ffffff;
+            --border-color: #e0e0e0;
         }
 
         * {
@@ -49,6 +52,7 @@
             font-size: 1.25rem;
             font-weight: bold;
             color: var(--primary-color);
+            cursor: pointer;
         }
 
         .logo span {
@@ -57,16 +61,44 @@
             display: block;
         }
 
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
         nav a {
             text-decoration: none;
             color: var(--text-dark);
             margin-left: 1.5rem;
             font-weight: 500;
             transition: color 0.3s;
+            cursor: pointer;
         }
 
         nav a:hover {
             color: var(--primary-color);
+        }
+
+        .nav-btn-quiz {
+            background-color: var(--accent-color);
+            color: var(--white) !important;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .nav-btn-quiz:hover {
+            background-color: var(--accent-hover);
+        }
+
+        /* 頁面切換控制 */
+        .page-view {
+            display: block;
+        }
+
+        .page-view.hidden {
+            display: none;
         }
 
         /* Hero 區塊 */
@@ -111,11 +143,18 @@
             text-align: left;
         }
 
+        .hero-btn-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
         .btn {
             display: inline-block;
             background-color: var(--accent-color);
             color: var(--white);
-            padding: 0.8rem 2.5rem;
+            padding: 0.8rem 2.2rem;
             border-radius: 5px;
             text-decoration: none;
             font-weight: bold;
@@ -126,12 +165,18 @@
         }
 
         .btn:hover {
-            background-color: #e68a00;
+            background-color: var(--accent-hover);
         }
 
-        .btn:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
+        .btn-outline-white {
+            background-color: transparent;
+            border: 2px solid var(--white);
+            color: var(--white);
+        }
+
+        .btn-outline-white:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
         }
 
         /* 內容區塊通用 */
@@ -261,7 +306,7 @@
             color: var(--text-dark);
         }
 
-        /* 報名表單 */
+        /* 報名表單與區塊 */
         .registration-container {
             background: var(--white);
             padding: 2.5rem;
@@ -289,6 +334,14 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
         }
 
         /* 雲端下載與上傳提示區塊 */
@@ -330,7 +383,248 @@
         }
 
         .btn-drive:hover {
-            background-color: #1b5e20;
+            background-color: var(--primary-hover);
+        }
+
+        /* ==================== 課前測驗子頁面專用樣式 ==================== */
+        .quiz-wrapper {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: var(--white);
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .quiz-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn-back {
+            background-color: #e2e8f0;
+            color: var(--text-dark);
+            padding: 0.4rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #cbd5e0;
+        }
+
+        .student-info-card {
+            background-color: #f7fafc;
+            border: 2px dashed var(--primary-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .input-group input {
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+        }
+
+        .result-banner {
+            display: none;
+            background-color: #f4fbf4;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .result-banner h2 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .result-banner .score-highlight {
+            font-size: 36px;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 25px;
+            background: #fff;
+        }
+
+        .question-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f0f7f0;
+            border-color: var(--primary-color);
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 12px;
+            accent-color: var(--primary-color);
+        }
+
+        .sticky-footer {
+            position: sticky;
+            bottom: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            margin-top: 30px;
+        }
+
+        .btn-custom {
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary-quiz {
+            background-color: var(--primary-color);
+        }
+
+        .btn-primary-quiz:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary-quiz {
+            background-color: var(--accent-color);
+        }
+
+        .btn-secondary-quiz:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-gray-quiz {
+            background-color: #718096;
+            margin-left: 5px;
+        }
+
+        .btn-gray-quiz:hover {
+            background-color: #4a5568;
+        }
+
+        .btn-danger-quiz {
+            background-color: #e53e3e;
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .btn-danger-quiz:hover {
+            background-color: #c53030;
+        }
+
+        .score-display-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* 紀錄表格 */
+        .record-table-container {
+            margin-top: 40px;
+            border-top: 2px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .record-table-container h3 {
+            margin-top: 0;
+            color: var(--text-dark);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        table th, table td {
+            border: 1px solid var(--border-color);
+            padding: 10px;
+            text-align: center;
+        }
+
+        table th {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f7fafc;
         }
 
         /* 頁尾 */
@@ -348,251 +642,326 @@
                 gap: 1rem;
             }
             nav a {
-                margin: 0 0.5rem;
+                margin: 0 0.4rem;
             }
             .hero h1 {
                 font-size: 1.8rem;
+            }
+            .student-info-card {
+                grid-template-columns: 1fr;
+            }
+            .sticky-footer {
+                flex-direction: column;
+                gap: 10px;
+                border-radius: 12px;
+            }
+            .quiz-wrapper {
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- 導覽列 -->
+    <!-- 頂部導覽列 -->
     <header>
         <div class="nav-container">
-            <div class="logo">
+            <div class="logo" onclick="switchPage('main')">
                 護你健康-延緩失智失能
                 <span>模組編號：CL-01-0494｜指導員培訓課程</span>
             </div>
-            <nav>
-                <a href="#summary">課程摘要</a>
-                <a href="#fee-info">費用與地點</a>
-                <a href="#outline">課程大綱</a>
-                <a href="#register">線上報名</a>
+            <nav id="mainNav">
+                <a onclick="switchPage('main'); scrollToSection('summary');">課程摘要</a>
+                <a onclick="switchPage('main'); scrollToSection('fee-info');">費用與地點</a>
+                <a onclick="switchPage('main'); scrollToSection('outline');">課程大綱</a>
+                <a onclick="switchPage('main'); scrollToSection('register');">線上報名</a>
+                <a onclick="switchPage('quiz')" class="nav-btn-quiz">📝 課前測驗</a>
             </nav>
         </div>
     </header>
 
-    <!-- Hero 區塊 -->
-    <div class="hero">
-        <span class="badge">指導員專業回訓課程</span>
-        <h1>銀髮族差異化運動指導實務</h1>
-        <p>本課程專為模組指導員設計，深度解析差異化教學的核心概念與實務應用，提升銀髮族運動指導的專業能力與效益。培養帶領長照據點銀髮族運動的實務應變能力，促進長輩身心健康！</p>
+    <!-- ==================== 1. 主頁面：課程與報名系統 ==================== -->
+    <div id="mainPageView" class="page-view">
         
-        <div class="hero-time-fee">
-            📍 <strong>上課地點：</strong>護理師公會教室<br>
-            📅 <strong>上課時間：</strong>8/31 (一) 09:00 - 16:00 (共 6 小時)<br>
-            💰 <strong>回訓費用：</strong>NT$ 1,500（具公會會員，具模組資格且應用於場域者<strong>免費</strong>）
+        <!-- Hero 區塊 -->
+        <div class="hero">
+            <span class="badge">指導員專業回訓課程</span>
+            <h1>銀髮族差異化運動指導實務</h1>
+            <p>本課程專為模組指導員設計，深度解析差異化教學的核心概念與實務應用，提升銀髮族運動指導的專業能力與效益。培養帶領長照據點銀髮族運動的實務應變能力，促進長輩身心健康！</p>
+            
+            <div class="hero-time-fee">
+                📍 <strong>上課地點：</strong>護理師公會教室<br>
+                📅 <strong>上課時間：</strong>8/31 (一) 09:00 - 16:00 (共 6 小時)<br>
+                💰 <strong>回訓費用：</strong>NT$ 1,500（具公會會員，具模組資格且應用於場域者<strong>免費</strong>）
+            </div>
+            <br>
+            <div class="hero-btn-group">
+                <a href="#register" class="btn">立即報名回訓</a>
+                <button type="button" class="btn btn-outline-white" onclick="switchPage('quiz')">進行課前測驗</button>
+            </div>
         </div>
-        <br>
-        <a href="#register" class="btn">立即報名回訓</a>
+
+        <!-- 課程摘要與費用資訊 -->
+        <section id="summary">
+            <h2 class="section-title">課程簡介與開課資訊</h2>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                課程內容涵蓋銀髮族身心特點評估、運動能力分級、進退階方案設計，以及如何因應不同環境、器材及人數規模彈性調整運動內容。同時著重於運動安全管理與突發狀況應變，確保學員能安全、有效地帶領長輩進行運動訓練。
+            </p>
+
+            <!-- 費用與地點資訊 -->
+            <div id="fee-info" class="fee-card-container">
+                <div class="fee-card">
+                    <h4>回訓標準費用</h4>
+                    <div class="price">NT$ 1,500 / 人</div>
+                    <p>一般回訓學員、欲提升銀髮指導專業實務能力者。</p>
+                </div>
+                <div class="fee-card highlight">
+                    <h4>🎁 特殊優惠專案</h4>
+                    <div class="price" style="color: #2E7D32;">免費優惠</div>
+                    <p><strong>適用條件：</strong>具備公會會員及模組資格，且目前有實際應用於長照/社區場域者。</p>
+                </div>
+            </div>
+
+            <h3 id="goals" style="color: var(--primary-color); margin-bottom: 1.5rem; text-align: center;">核心學習目標</h3>
+            <div class="goals-grid">
+                <div class="goal-card">📌 深入理解差異化教學在銀髮族運動訓練中的關鍵作用與應用策略。</div>
+                <div class="goal-card">📌 精準掌握銀髮族身體狀況評估與運動能力分級技巧，奠定個別化運動基礎。</div>
+                <div class="goal-card">📌 依長輩身體狀況與功能限制，設計多元且具挑戰性的運動進階與退階方案。</div>
+                <div class="goal-card">📌 提升因應不同物理環境、器材設施及人數規模靈活調整內容的應變能力。</div>
+                <div class="goal-card">📌 強化長照據點運動指導的安全風險評估、即時觀察與突發狀況應變能力。</div>
+                <div class="goal-card">📌 培養優質動作示範、清晰口語指令與肢體回饋技巧，提升長輩參與度。</div>
+            </div>
+        </section>
+
+        <!-- 課程大綱 -->
+        <section id="outline" style="background-color: #f0f7f0;">
+            <h2 class="section-title">課程大綱 (8/31 09:00 - 16:00 共 6 小時)</h2>
+            <div class="outline-container">
+                
+                <div class="outline-box">
+                    <div class="outline-header">
+                        1. 差異化教學核心概念與銀髮族運動趨勢
+                        <span>1 小時 (09:00 - 10:00)</span>
+                    </div>
+                    <div class="outline-body">
+                        <ul>
+                            <li>什麼是差異化教學？為何在銀髮族運動中如此重要？</li>
+                            <li>銀髮族運動生理與心理特點概覽：從理論到實務</li>
+                            <li>銀髮族運動指導的最新趨勢與挑戰</li>
+                            <li>活動暖身與破冰：建立學習氛圍</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="outline-box">
+                    <div class="outline-header">
+                        2. 銀髮族運動能力評估與分級
+                        <span>1 小時 (10:00 - 11:00)</span>
+                    </div>
+                    <div class="outline-body">
+                        <ul>
+                            <li>長輩身體狀況快速評估技巧與工具應用</li>
+                            <li>基礎體能與功能性評估項目</li>
+                            <li>跌倒風險評估與認知功能觀察</li>
+                            <li>運動能力分級：從初階到高階的分流策略</li>
+                            <li>個案分析與實務演練：評估資料判讀與分級應用</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="outline-box">
+                    <div class="outline-header">
+                        3. 運動進退階設計與教學技巧
+                        <span>2 小時 (11:00 - 12:00 / 13:00 - 14:00)</span>
+                    </div>
+                    <div class="outline-body">
+                        <ul>
+                            <li><strong>坐姿運動差異化應用：</strong>強化核心與平衡、多元坐姿變化與難度調整、結合呼吸與動作進階練習。</li>
+                            <li><strong>站姿與輔助站姿差異化：</strong>提升下肢肌力與穩定性、輔助站姿漸進訓練、進階站姿平衡與協調訓練。</li>
+                            <li><strong>動作難度調整策略：</strong>強度/頻率/時間/組數變化、器材輔助與阻力調整、動作速度與範圍控制。</li>
+                            <li><strong>教學技巧：</strong>清晰簡潔的口語指令設計、有效的肢體回饋與觸摸引導、常見錯誤動作辨識與糾正。</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="outline-box">
+                    <div class="outline-header">
+                        4. 環境、器材與人數的彈性運用
+                        <span>1 小時 (14:00 - 15:00)</span>
+                    </div>
+                    <div class="outline-body">
+                        <ul>
+                            <li>空間大小的應對策略：室內外場地的靈活運用</li>
+                            <li>有/無器材的運動設計：發揮創意，就地取材（日常物品應用、簡易運動器材選擇）</li>
+                            <li>人數差異的教學應變：大型團體與小組教學的策略調整</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="outline-box">
+                    <div class="outline-header">
+                        5. 運動安全管理與突發狀況應變
+                        <span>1 小時 (15:00 - 16:00)</span>
+                    </div>
+                    <div class="outline-body">
+                        <ul>
+                            <li>運動前的風險評估與篩檢：禁忌症與注意事項</li>
+                            <li>運動中的觀察與即時調整：身體訊號的判讀</li>
+                            <li>突發狀況的應變流程與緊急處理：跌倒、暈眩、心臟不適等</li>
+                            <li>據點運動指導的倫理與法律責任</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 線上報名系統 -->
+        <section id="register">
+            <h2 class="section-title">指導員回訓線上報名系統</h2>
+            <div class="registration-container">
+                <form id="enrollmentForm" onsubmit="handleSubmit(event)">
+                    
+                    <div class="form-group">
+                        <label>課程地點與時間</label>
+                        <input type="text" value="護理師公會教室（8/31 一 09:00 - 16:00）" disabled style="background-color: #eee;">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="name">學員姓名 *</label>
+                        <input type="text" id="name" placeholder="請輸入真實姓名" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="identity">參訓身份 *</label>
+                        <select id="identity" required>
+                            <option value="">請選擇身分...</option>
+                            <option value="CL-01-0494模組合格師資／指導員，為本公會會員，有實際使用模組應用於場域者">CL-01-0494模組合格師資／指導員，為本公會會員，有實際使用模組應用於場域者</option>
+                            <option value="CL-01-0494模組合格師資／指導員，為本公會會員，應用模組於場域示範達三場以上者（需上傳證明文件）">CL-01-0494模組合格師資／指導員，為本公會會員，應用模組於場域示範達三場以上者（需上傳證明文件）</option>
+                            <option value="CL-01-0494模組合格師資／指導員，非本公會會員">CL-01-0494模組合格師資／指導員，非本公會會員</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="feeDiscount">學費優惠資格評估 *</label>
+                        <select id="feeDiscount" required>
+                            <option value="">請選擇費用身份...</option>
+                            <option value="免費優惠（為本公會會員，具模組資格且目前有於場域應用（含三場示範場域））">免費優惠（為本公會會員，具模組資格且目前有於場域應用（含三場示範場域）</option>
+                            <option value="標準回訓價 NT$ 1,500">標準回訓價 NT$ 1,500</option>
+                        </select>
+                    </div>
+
+                    <!-- 雲端下載與上傳說明區塊 -->
+                    <div class="drive-notice-box">
+                        <h4>📁 免費優惠申請：三場場域示範教學紀錄下載與繳交</h4>
+                        <ol>
+                            <li>點擊下方按鈕前往 Google 雲端硬碟，下載「<strong>示範教學紀錄單</strong>」空白表格。</li>
+                            <li>填寫 3 場場域示範紀錄（包含實施時間、地點、參加人員與活動照片）。</li>
+                            <li>將填妥的檔案**直接上傳至該 Google 雲端硬碟資料夾**即完成資格審核備查！</li>
+                        </ol>
+                        <a href="https://drive.google.com/drive/folders/1Lkp4dgliUNWIia-LJ1IZFbRG4fg7-OyR?usp=sharing" target="_blank" class="btn-drive">
+                            ☁️ 前往雲端硬碟下載空白表單與上傳證明檔案
+                        </a>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="organization">目前服務單位 / 應用場域名稱 *</label>
+                        <input type="text" id="organization" placeholder="例如：XX社區照顧關懷據點 / XX巷弄長照站" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">聯絡電話 *</label>
+                        <input type="tel" id="phone" placeholder="例如：0912-345-678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">電子信箱 *</label>
+                        <input type="email" id="email" placeholder="用於接收行前通知與研習證書" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="note">備註 / 期望在課程中解決的實務問題（選填）</label>
+                        <textarea id="note" rows="3" placeholder="例如：希望能了解長輩下肢肌力退化嚴重的坐姿退階運動..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn" style="width: 100%;">送出回訓報名</button>
+                </form>
+            </div>
+        </section>
     </div>
 
-    <!-- 課程摘要與費用資訊 -->
-    <section id="summary">
-        <h2 class="section-title">課程簡介與開課資訊</h2>
-        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
-            課程內容涵蓋銀髮族身心特點評估、運動能力分級、進退階方案設計，以及如何因應不同環境、器材及人數規模彈性調整運動內容。同時著重於運動安全管理與突發狀況應變，確保學員能安全、有效地帶領長輩進行運動訓練。
-        </p>
+    <!-- ==================== 2. 子頁面：學前測驗與成績紀錄系統 ==================== -->
+    <div id="quizPageView" class="page-view hidden">
+        <div class="quiz-wrapper">
+            <div class="quiz-header-bar">
+                <button type="button" class="btn-back" onclick="switchPage('main')">← 返回課程首頁</button>
+                <div style="font-weight: bold; color: var(--primary-color);">模組課前專業評量</div>
+            </div>
 
-        <!-- 費用與地點資訊 -->
-        <div id="fee-info" class="fee-card-container">
-            <div class="fee-card">
-                <h4>回訓標準費用</h4>
-                <div class="price">NT$ 1,500 / 人</div>
-                <p>一般回訓學員、欲提升銀髮指導專業實務能力者。</p>
-            </div>
-            <div class="fee-card highlight">
-                <h4>🎁 特殊優惠專案</h4>
-                <div class="price" style="color: #2E7D32;">免費優惠</div>
-                <p><strong>適用條件：</strong>具備公會會員及模組資格，且目前有實際應用於長照/社區場域者。</p>
-            </div>
-        </div>
+            <header style="border-bottom: none; padding-bottom: 0; margin-bottom: 20px;">
+                <h1 style="font-size: 24px;">銀髮族差異化運動指導實務 課前自我測驗</h1>
+                <p>請先填寫真實姓名與單位，交卷後系統將自動計算成績並即時同步記錄至 Google 雲端試算表（共 25 題，滿分 100 分）</p>
+            </header>
 
-        <h3 id="goals" style="color: var(--primary-color); margin-bottom: 1.5rem; text-align: center;">核心學習目標</h3>
-        <div class="goals-grid">
-            <div class="goal-card">
-                📌 深入理解差異化教學在銀髮族運動訓練中的關鍵作用與應用策略。
-            </div>
-            <div class="goal-card">
-                📌 精準掌握銀髮族身體狀況評估與運動能力分級技巧，奠定個別化運動基礎。
-            </div>
-            <div class="goal-card">
-                📌 依長輩身體狀況與功能限制，設計多元且具挑戰性的運動進階與退階方案。
-            </div>
-            <div class="goal-card">
-                📌 提升因應不同物理環境、器材設施及人數規模靈活調整內容的應變能力。
-            </div>
-            <div class="goal-card">
-                📌 強化長照據點運動指導的安全風險評估、即時觀察與突發狀況應變能力。
-            </div>
-            <div class="goal-card">
-                📌 培養優質動作示範、清晰口語指令與肢體回饋技巧，提升長輩參與度。
-            </div>
-        </div>
-    </section>
-
-    <!-- 課程大綱 -->
-    <section id="outline" style="background-color: #f0f7f0;">
-        <h2 class="section-title">課程大綱 (8/31 09:00 - 16:00 共 6 小時)</h2>
-        <div class="outline-container">
-            
-            <!-- 單元 1 -->
-            <div class="outline-box">
-                <div class="outline-header">
-                    1. 差異化教學核心概念與銀髮族運動趨勢
-                    <span>1 小時 (09:00 - 10:00)</span>
+            <!-- 學員基本資料填寫區 -->
+            <div class="student-info-card">
+                <div class="input-group">
+                    <label for="studentName">學員姓名 <span style="color:red;">*</span></label>
+                    <input type="text" id="studentName" placeholder="請輸入您的真實姓名" required>
                 </div>
-                <div class="outline-body">
-                    <ul>
-                        <li>什麼是差異化教學？為何在銀髮族運動中如此重要？</li>
-                        <li>銀髮族運動生理與心理特點概覽：從理論到實務</li>
-                        <li>銀髮族運動指導的最新趨勢與挑戰</li>
-                        <li>活動暖身與破冰：建立學習氛圍</li>
-                    </ul>
+                <div class="input-group">
+                    <label for="studentOrg">服務單位 / 學號（選填）</label>
+                    <input type="text" id="studentOrg" placeholder="請輸入所屬據點、單位或學號">
                 </div>
             </div>
 
-            <!-- 單元 2 -->
-            <div class="outline-box">
-                <div class="outline-header">
-                    2. 銀髮族運動能力評估與分級
-                    <span>1 小時 (10:00 - 11:00)</span>
-                </div>
-                <div class="outline-body">
-                    <ul>
-                        <li>長輩身體狀況快速評估技巧與工具應用</li>
-                        <li>基礎體能與功能性評估項目</li>
-                        <li>跌倒風險評估與認知功能觀察</li>
-                        <li>運動能力分級：從初階到高階的分流策略</li>
-                        <li>個案分析與實務演練：評估資料判讀與分級應用</li>
-                    </ul>
-                </div>
+            <!-- 測驗完成結果看板 -->
+            <div id="resultBanner" class="result-banner">
+                <h2>課前測驗已完成</h2>
+                <div id="bannerName" style="font-size: 18px; color: var(--text-dark); margin-top: 5px;"></div>
+                <div id="bannerScore" class="score-highlight"></div>
+                <div id="bannerDetail" style="font-size: 14px; color: var(--text-light);"></div>
+                <div id="cloudStatus" style="margin-top: 10px; font-weight: bold; font-size: 13px;"></div>
             </div>
 
-            <!-- 單元 3 -->
-            <div class="outline-box">
-                <div class="outline-header">
-                    3. 運動進退階設計與教學技巧
-                    <span>2 小時 (11:00 - 12:00 / 13:00 - 14:00)</span>
-                </div>
-                <div class="outline-body">
-                    <ul>
-                        <li><strong>坐姿運動差異化應用：</strong>強化核心與平衡、多元坐姿變化與難度調整、結合呼吸與動作進階練習。</li>
-                        <li><strong>站姿與輔助站姿差異化：</strong>提升下肢肌力與穩定性、輔助站姿漸進訓練、進階站姿平衡與協調訓練。</li>
-                        <li><strong>動作難度調整策略：</strong>強度/頻率/時間/組數變化、器材輔助與阻力調整、動作速度與範圍控制。</li>
-                        <li><strong>教學技巧：</strong>清晰簡潔的口語指令設計、有效的肢體回饋與觸摸引導、常見錯誤動作辨識與糾正。</li>
-                    </ul>
-                </div>
-            </div>
+            <form id="quizForm">
+                <div id="quizContainer"></div>
 
-            <!-- 單元 4 -->
-            <div class="outline-box">
-                <div class="outline-header">
-                    4. 環境、器材與人數的彈性運用
-                    <span>1 小時 (14:00 - 15:00)</span>
+                <div class="sticky-footer">
+                    <div id="scoreText" class="score-display-text">請填寫姓名並完成題目後交卷</div>
+                    <div>
+                        <button type="button" id="submitQuizBtn" class="btn-custom btn-primary-quiz" onclick="submitQuiz()">交卷並同步雲端</button>
+                        <button type="button" class="btn-custom btn-gray-quiz" onclick="resetQuiz()">清空重填</button>
+                    </div>
                 </div>
-                <div class="outline-body">
-                    <ul>
-                        <li>空間大小的應對策略：室內外場地的靈活運用</li>
-                        <li>有/無器材的運動設計：發揮創意，就地取材（日常物品應用、簡易運動器材選擇）</li>
-                        <li>人數差異的教學應變：大型團體與小組教學的策略調整</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- 單元 5 -->
-            <div class="outline-box">
-                <div class="outline-header">
-                    5. 運動安全管理與突發狀況應變
-                    <span>1 小時 (15:00 - 16:00)</span>
-                </div>
-                <div class="outline-body">
-                    <ul>
-                        <li>運動前的風險評估與篩檢：禁忌症與注意事項</li>
-                        <li>運動中的觀察與即時調整：身體訊號的判讀</li>
-                        <li>突發狀況的應變流程與緊急處理：跌倒、暈眩、心臟不適等</li>
-                        <li>據點運動指導的倫理與法律責任</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- 線上報名系統 -->
-    <section id="register">
-        <h2 class="section-title">指導員回訓線上報名系統</h2>
-        <div class="registration-container">
-            <form id="enrollmentForm" onsubmit="handleSubmit(event)">
-                
-                <div class="form-group">
-                    <label>課程地點與時間</label>
-                    <input type="text" value="護理師公會教室（8/31 一 09:00 - 16:00）" disabled style="background-color: #eee;">
-                </div>
-
-                <div class="form-group">
-                    <label for="name">學員姓名 *</label>
-                    <input type="text" id="name" placeholder="請輸入真實姓名" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="identity">參訓身份 *</label>
-                    <select id="identity" required>
-                        <option value="">請選擇身分...</option>
-                        <option value="CL-01-0494模組合格師資／指導員，為本公會會員，有實際使用模組應用於場域者">CL-01-0494模組合格師資／指導員，為本公會會員，有實際使用模組應用於場域者</option>
-                        <option value="CL-01-0494模組合格師資／指導員，為本公會會員，應用模組於場域示範達三場以上者（需上傳證明文件）">CL-01-0494模組合格師資／指導員，為本公會會員，應用模組於場域示範達三場以上者（需上傳證明文件）</option>
-                        <option value="CL-01-0494模組合格師資／指導員，非本公會會員">CL-01-0494模組合格師資／指導員，非本公會會員</option>
-                        </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="feeDiscount">學費優惠資格評估 *</label>
-                    <select id="feeDiscount" required>
-                        <option value="">請選擇費用身份...</option>
-                        <option value="免費優惠（為本公會會員，具模組資格且目前有於場域應用（含三場示範場域））">免費優惠（為本公會會員，具模組資格且目前有於場域應用（含三場示範場域）</option>
-                        <option value="標準回訓價 NT$ 1,500">標準回訓價 NT$ 1,500</option>
-                    </select>
-                </div>
-
-                <!-- 雲端下載與上傳說明區塊 -->
-                <div class="drive-notice-box">
-                    <h4>📁 免費優惠申請：三場場域示範教學紀錄下載與繳交</h4>
-                    <ol>
-                        <li>點擊下方按鈕前往 Google 雲端硬碟，下載「<strong>示範教學紀錄單</strong>」空白表格。</li>
-                        <li>填寫 3 場場域示範紀錄（包含實施時間、地點、參加人員與活動照片）。</li>
-                        <li>將填妥的檔案**直接上傳至該 Google 雲端硬碟資料夾**即完成資格審核備查！</li>
-                    </ol>
-                    <a href="https://drive.google.com/drive/folders/1Lkp4dgliUNWIia-LJ1IZFbRG4fg7-OyR?usp=sharing" target="_blank" class="btn-drive">
-                        ☁️ 前往雲端硬碟下載空白表單與上傳證明檔案
-                    </a>
-                </div>
-
-                <div class="form-group">
-                    <label for="organization">目前服務單位 / 應用場域名稱 *</label>
-                    <input type="text" id="organization" placeholder="例如：XX社區照顧關懷據點 / XX巷弄長照站" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">聯絡電話 *</label>
-                    <input type="tel" id="phone" placeholder="例如：0912-345-678" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">電子信箱 *</label>
-                    <input type="email" id="email" placeholder="用於接收行前通知與研習證書" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="note">備註 / 期望在課程中解決的實務問題（選填）</label>
-                    <textarea id="note" rows="3" placeholder="例如：希望能了解長輩下肢肌力退化嚴重的坐姿退階運動..."></textarea>
-                </div>
-
-                <button type="submit" class="btn" style="width: 100%;">送出回訓報名</button>
             </form>
+
+            <!-- 課前成績名冊 -->
+            <div class="record-table-container">
+                <h3>
+                    <span>課前測驗成績名冊（本機已記錄）</span>
+                    <div>
+                        <button type="button" class="btn-custom btn-secondary-quiz" onclick="exportToCSV()" style="padding: 6px 14px; font-size: 13px;">匯出 CSV 報表</button>
+                        <button type="button" class="btn-custom btn-danger-quiz" onclick="clearRecords()">清空名冊</button>
+                    </div>
+                </h3>
+                <table id="recordTable">
+                    <thead>
+                        <tr>
+                            <th>測驗時間</th>
+                            <th>學員姓名</th>
+                            <th>服務單位 / 學號</th>
+                            <th>答對題數</th>
+                            <th>課前成績</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordList">
+                        <!-- 動態注入成績紀錄 -->
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </section>
+    </div>
 
     <!-- 頁尾 -->
     <footer>
@@ -600,10 +969,35 @@
         <p style="font-size: 0.85rem; color: #aaa; margin-top: 0.5rem;">© 2026 版權所有，非授權請勿擅自重製或引用課程教材內容。</p>
     </footer>
 
-    <!-- JavaScript 串接 Google Apps Script -->
+    <!-- JavaScript 業務邏輯 -->
     <script>
+        /* 1. Google Apps Script Web App 端點 URL */
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbzwWJr0apaOvjjuOBDLV0KrhoMqCg3nbQhqPoBrO4Uwp__eSrYIXeBbmFYyDsSjmVjgEA/exec';
 
+        /* 2. 頁面導覽與切換 */
+        function switchPage(page) {
+            const mainPage = document.getElementById('mainPageView');
+            const quizPage = document.getElementById('quizPageView');
+
+            if (page === 'quiz') {
+                mainPage.classList.add('hidden');
+                quizPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                quizPage.classList.add('hidden');
+                mainPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        /* 3. 報名表單串接 Google Apps Script */
         async function handleSubmit(event) {
             event.preventDefault();
             
@@ -612,6 +1006,7 @@
             submitBtn.innerText = '資料傳送中...';
 
             const formData = {
+                type: 'enrollment',
                 courseSession: '8/31 (一) 護理師公會教室研習',
                 name: document.getElementById('name').value,
                 identity: document.getElementById('identity').value,
@@ -647,6 +1042,490 @@
                 submitBtn.innerText = '送出回訓報名';
             }
         }
+
+        /* 4. 課前 25 題測驗題庫 */
+        const quizData = [
+            {
+                id: 1,
+                question: "根據 Nagi (1991) 失能模式及其修正版本，在疾病與最終失能之間，下列哪一項是串聯生理結構受損到無法執行角色任務的中間階段？",
+                options: [
+                    "生活型態不活動 → 功能障礙 → 功能限制",
+                    "功能障礙 (Impairment) → 功能限制 (Functional limitation)",
+                    "環境障礙 → 疾病惡化 → 心理退化",
+                    "功能受限 → 認知障礙 → 生理衰退"
+                ],
+                answer: 1
+            },
+            {
+                id: 2,
+                question: "在正常老化過程中，人體的心血管與運動生理參數會隨年齡改變。下列何項參數在老年期會呈現「增加或上升」的趨勢？",
+                options: [
+                    "安靜心跳率 (Resting HR) 與最大攝氧量",
+                    "最大心跳率 (HRmax) 與去脂體重",
+                    "休息與訓練時的血壓 (BP) 以及反應時間",
+                    "肌肉力量與關節柔軟度"
+                ],
+                answer: 2
+            },
+            {
+                id: 3,
+                question: "在運動處方設計所依循的「超補償循環」（Supercompensation）中，訓練刺激後使體能水準超越原先恆定狀態的關鍵階段為下列何者？",
+                options: [
+                    "第一階段：疲勞 (Fatigue)",
+                    "第二階段：補償/恢復 (Compensation)",
+                    "第三階段：超補償 (Supercompensation)",
+                    "第四階段：衰退 (Involution)"
+                ],
+                answer: 2
+            },
+            {
+                id: 4,
+                question: "針對虛弱高齡者進行訓練前風險評估時，下列哪一項測試結果符合「測試無法完成或高風險」之標準？",
+                options: [
+                    "4 或 5 公尺步行速度為 1.0 公尺/秒",
+                    "五次坐站測試 (Five times sit to stand) 所需時間為 11.5 秒",
+                    "功能性前伸測試 (Functional reach) 距離小於 6 英吋（15.2 公分）",
+                    "起立行走測試 (TUG) 所需時間為 10.2 秒"
+                ],
+                answer: 2
+            },
+            {
+                id: 5,
+                question: "在長者「起立行走測試」（Timed Up and Go, TUG）的標準風險篩檢中，超過多少秒通常被判定為具高度跌倒與行動受限風險？",
+                options: [
+                    "> 8.5 秒",
+                    "> 10.0 秒",
+                    "> 13.5 秒",
+                    "> 20.0 秒"
+                ],
+                answer: 2
+            },
+            {
+                id: 6,
+                question: "依據老年人維持身體獨立能力的體適能常模，70-74 歲長者在「30秒椅子坐站測試」中，維持獨立功能的標準建議次數為：",
+                options: [
+                    "女性 10 次、男性 11 次",
+                    "女性 14 次、男性 15 次",
+                    "女性 18 次、男性 20 次",
+                    "女性 8 次、男性 9 次"
+                ],
+                answer: 1
+            },
+            {
+                id: 7,
+                question: "針對健康老年人的阻力運動處方建議（FITT），初學者應從何種強度與組數開始循序漸進？",
+                options: [
+                    "20%-30% 1-RM，3 組 20 次",
+                    "40%-50% 1-RM，1 組 10-15 次",
+                    "60%-80% 1-RM，3 組 8-12 次",
+                    "75%-85% 1-RM，2 組 6-8 次"
+                ],
+                answer: 1
+            },
+            {
+                id: 8,
+                question: "為腦血管意外（中風）患者規劃運動處方時，下列何項原則最為適當？",
+                options: [
+                    "有氧運動若無遞增負荷測試數據，應使用 RPE 11-14 分（6-20 分量表）控制強度",
+                    "阻力訓練應一律採用自由重量以促進本體感覺",
+                    "有氧運動頻率應強制每日單次持續 60 分鐘不得中斷",
+                    "伸展運動應每週僅能執行 1 次以避免痙攣"
+                ],
+                answer: 0
+            },
+            {
+                id: 9,
+                question: "針對糖尿病患者的運動指導與處方規劃，下列敘述何者正確？",
+                options: [
+                    "有氧運動頻率為每週 3-7 天，且連續不運動的時間不宜超過 2 天",
+                    "不可進行任何非結構化的日常活動以免發生低血糖",
+                    "阻力訓練僅能使用自身體重，不可使用彈力帶或器械",
+                    "為避免血糖波動，應完全禁止高強度間歇訓練（HIIT）"
+                ],
+                answer: 0
+            },
+            {
+                id: 10,
+                question: "高血壓患者在進行阻力與有氧運動訓練時，下列何項安全考量最關鍵？",
+                options: [
+                    "阻力運動應鼓勵閉氣用力（Valsalva 動作）以增加軀幹核心支撐力",
+                    "運動中應避免過度屏氣與劇烈血壓波動，有氧運動強度建議在 40%-59% VO₂R（RPE 12-13）",
+                    "收縮壓只要超過 160 mmHg 就必須永久終止所有運動",
+                    "高血壓患者阻力運動頻率必須達到每週 7 天"
+                ],
+                answer: 1
+            },
+            {
+                id: 11,
+                question: "為退化性關節炎患者制定運動計畫時，下列哪一項做法符合指引建議？",
+                options: [
+                    "必須在關節疼痛劇烈發作時強迫進行極限活動度拉伸以防沾黏",
+                    "優先選擇高衝擊跑步與反覆深蹲跳躍以增強關節面刺激",
+                    "有氧運動優先選擇低關節壓力的型態（如走路、水中運動、腳踏車）",
+                    "阻力訓練強度必須直接設定在 90% 1-RM 以上"
+                ],
+                answer: 2
+            },
+            {
+                id: 12,
+                question: "針對骨質疏鬆症長者的運動處方設計與動作選擇，下列何者正確？",
+                options: [
+                    "應大量安排高角度脊柱屈曲伴隨快速旋轉的動作",
+                    "以負重有氧與肌力訓練為主，並強調姿勢控制與防跌平衡",
+                    "完全不可進行任何負重活動，僅能臥床進行靜態伸展",
+                    "每週阻力訓練必須連續進行 5 天且不得安排休息日"
+                ],
+                answer: 1
+            },
+            {
+                id: 13,
+                question: "在阿茲海默症（失智症）患者的運動指導實務中，為了確保安全性，阻力訓練應優先採取何種策略？",
+                options: [
+                    "著重使用槓鈴與啞鈴自由重量進行大重量訓練",
+                    "避免使用自由重量，優先採用重量器械、彈力帶或自身體重",
+                    "完全不需指令簡化，直接給予多步驟複合動作指令",
+                    "運動過程中不需要助教或視覺提示"
+                ],
+                answer: 1
+            },
+            {
+                id: 14,
+                question: "帕金森氏症患者的運動訓練中，除了有氧、阻力與柔軟度外，特別強調哪一類型的訓練？",
+                options: [
+                    "神經動作運動（動作技能、多方向步態、大動作幅度與雙重任務）",
+                    "長時間極限耐力跑",
+                    "大重量單一關節極限等長收縮",
+                    "高衝擊爆發力折返跑"
+                ],
+                answer: 0
+            },
+            {
+                id: 15,
+                question: "在差異化能力分級中，針對「需要協助族群（微受限長者）」之課程設計重點為何？",
+                options: [
+                    "完全不需要任何輔具，直接進行單腳跳躍訓練",
+                    "以坐姿或支撐式練習為主，強調安全性與適度輔助",
+                    "以競技性高強度間歇跑為主",
+                    "僅能進行被動關節活動度維持，不可有主動肌力收縮"
+                ],
+                answer: 1
+            },
+            {
+                id: 16,
+                question: "人體動作分析中包含三大運動平面。進行「側向跨步（Side step）」或「髖關節外展」時，主要發生在哪一個平面？",
+                options: [
+                    "矢狀面 (Sagittal Plane)",
+                    "額狀面 (Frontal Plane)",
+                    "橫狀面 (Transverse Plane)",
+                    "垂直軸面 (Vertical Axis)"
+                ],
+                answer: 1
+            },
+            {
+                id: 17,
+                question: "在動作分階實作中，下列何種調整屬於「進階（Progression）」的設計手法？",
+                options: [
+                    "將站姿動作改為坐姿執行",
+                    "增加支撐底面積（Base of Support）並提供扶手",
+                    "縮短動作力臂長度",
+                    "從單一任務增加為結合認知或視覺干擾的「雙重任務（Dual-task）」"
+                ],
+                answer: 3
+            },
+            {
+                id: 18,
+                question: "指導員在進行學員錯誤動作辨識與糾正時，應遵循下列哪一項原則？",
+                options: [
+                    "同時指責學員所有大大小小的錯誤以求一步到位",
+                    "先修改最主要的關鍵錯誤，並按照動作的先後順序逐步修正",
+                    "忽略動作力線偏移，只要求學員加快動作速度",
+                    "完全不示範正確動作，僅透過大聲口令喝斥"
+                ],
+                answer: 1
+            },
+            {
+                id: 19,
+                question: "一堂 45-60 分鐘的銀髮族標準團體運動課程，講義建議的時間與結構配比為何？",
+                options: [
+                    "熱身 20 分鐘、主要訓練 10 分鐘、收操 30 分鐘",
+                    "熱身 10 分鐘、主要訓練 25-35 分鐘、放鬆收操 5-10 分鐘",
+                    "主要訓練 55 分鐘、不需熱身與收操",
+                    "熱身 30 分鐘、主要訓練 30 分鐘、無收操"
+                ],
+                answer: 1
+            },
+            {
+                id: 20,
+                question: "心血管疾病篩檢中，「缺血起源（Ischemic origin）」的心絞痛或胸部不適，通常具有下列哪項臨床特徵？",
+                options: [
+                    "胸骨下或前側出現擠壓感、收縮感、燒灼或重壓感，且可能放射至肩頸、手臂或下巴",
+                    "左乳房下局部短暫的刀割樣、針刺樣銳痛",
+                    "僅在深呼吸或打嗝時誘發的局部刺痛",
+                    "用手指按壓肋骨特定點會引發劇烈壓痛"
+                ],
+                answer: 0
+            },
+            {
+                id: 21,
+                question: "在長者健康評估中，若觀察到長者有「雙側踝部水腫（Ankle edema）且夜間最明顯」，最常反映下列何種潛在病況？",
+                options: [
+                    "單側深層靜脈血栓 (DVT)",
+                    "心臟衰竭 (Heart Failure) 或雙側慢性靜脈功能不全",
+                    "急性骨折",
+                    "周邊神經良性病變"
+                ],
+                answer: 1
+            },
+            {
+                id: 22,
+                question: "在運動測試或訓練進行時，出現下列哪一項生理指標時，必須「立即緊急停止運動」？",
+                options: [
+                    "運動強度提升時，心跳率適度上升",
+                    "儘管增加運動負荷，收縮壓較測試前同姿勢數值反而下降 ≥ 10 mmHg",
+                    "運動進行 10 分鐘後出汗且自覺微喘（RPE 12）",
+                    "收縮壓由 120 mmHg 上升至 145 mmHg"
+                ],
+                answer: 1
+            },
+            {
+                id: 23,
+                question: "運動指導實務的風險管理策略循環包含四大策略。若指導員評估某項高衝擊動作對骨鬆長者骨折風險過高而「決定完全不採用該動作」，此策略屬於：",
+                options: [
+                    "保留風險 (Risk retention)",
+                    "避免風險 (Risk avoidance)",
+                    "轉移風險 (Risk transference)",
+                    "降低風險 (Risk reduction)"
+                ],
+                answer: 1
+            },
+            {
+                id: 24,
+                question: "指導員與認知功能輕度受損（如輕度失智）的長者進行運動教學互動時，下列何種溝通方式最有效？",
+                options: [
+                    "一口氣說明連續 5 個動作步驟以測驗其記憶力",
+                    "簡化口令指示、分步驟示範、重複關鍵字並搭配視覺手勢提示",
+                    "使用深奧的解剖學術語向長者詳細解說肌肉起迄點",
+                    "遇到學員做錯時立即給予嚴厲指責以加深印象"
+                ],
+                answer: 1
+            },
+            {
+                id: 25,
+                question: "在銀髮族運動課程的品質改善循環（PDCA）與成效追蹤中，建議至少間隔多長時間進行一次「長期追蹤評估」以檢驗維持效果？",
+                options: [
+                    "每週追評一次",
+                    "每 3-6 個月追評一次",
+                    "每 3 年追評一次",
+                    "終身不需再次評估"
+                ],
+                answer: 1
+            }
+        ];
+
+        /* 5. 測驗渲染、成績計算與同步至 Google 雲端試算表 */
+        function renderQuiz() {
+            const container = document.getElementById('quizContainer');
+            if (!container) return;
+            container.innerHTML = '';
+
+            quizData.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `qCard_${index}`;
+
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="option-label">
+                            <input type="radio" name="q_${index}" value="${optIndex}">
+                            <span>${String.fromCharCode(65 + optIndex)}. ${opt}</span>
+                        </label>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="question-title">${q.id}. ${q.question}</div>
+                    <div class="options-group">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            renderRecords();
+        }
+
+        async function submitQuiz() {
+            const nameInput = document.getElementById('studentName');
+            const name = nameInput.value.trim();
+            const org = document.getElementById('studentOrg').value.trim() || '未填寫';
+
+            if (!name) {
+                alert('請先填寫上方「學員姓名」後再進行交卷！');
+                nameInput.focus();
+                return;
+            }
+
+            let score = 0;
+            let answeredCount = 0;
+            const total = quizData.length;
+
+            quizData.forEach((q, index) => {
+                const selected = document.querySelector(`input[name="q_${index}"]:checked`);
+                if (selected) {
+                    answeredCount++;
+                    if (parseInt(selected.value) === q.answer) {
+                        score++;
+                    }
+                }
+            });
+
+            if (answeredCount < total) {
+                if (!confirm(`您尚有 ${total - answeredCount} 題未作答，確定要現在交卷計分嗎？`)) {
+                    return;
+                }
+            }
+
+            const finalScore = Math.round((score / total) * 100);
+            const now = new Date();
+            const timeStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+
+            // 本機儲存
+            const newRecord = {
+                time: timeStr,
+                name: name,
+                org: org,
+                correctCount: score,
+                score: finalScore
+            };
+            saveRecord(newRecord);
+
+            // 更新結果面板
+            document.getElementById('bannerName').innerText = `受測學員：${name}（${org}）`;
+            document.getElementById('bannerScore').innerText = `${finalScore} 分`;
+            document.getElementById('bannerDetail').innerText = `答對題數：${score} / ${total} 題 ｜ 作答題數：${answeredCount} / ${total} 題 ｜ 完成時間：${timeStr}`;
+            
+            const cloudStatus = document.getElementById('cloudStatus');
+            cloudStatus.style.color = '#FF9800';
+            cloudStatus.innerText = '☁️ 成績資料同步寫入雲端硬碟中...';
+            document.getElementById('resultBanner').style.display = 'block';
+
+            document.getElementById('scoreText').innerText = `【${name}】課前成績：${finalScore} 分`;
+            renderRecords();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // 禁用按鈕防止重複提交
+            const submitBtn = document.getElementById('submitQuizBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = '成績同步中...';
+
+            // 同步上傳至 Google Apps Script
+            const payload = {
+                type: 'quiz_result',
+                time: timeStr,
+                name: name,
+                organization: org,
+                correctCount: `${score}/${total}`,
+                score: finalScore
+            };
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+
+                if (result.result === 'success') {
+                    cloudStatus.style.color = '#2E7D32';
+                    cloudStatus.innerText = '✅ 成績已成功登錄至 Google 雲端試算表！';
+                } else {
+                    cloudStatus.style.color = '#e53e3e';
+                    cloudStatus.innerText = '⚠️ 本機已記錄，但雲端回傳訊息：' + (result.message || '請確認試算表權限');
+                }
+            } catch (err) {
+                console.error('Quiz Cloud Sync Error:', err);
+                cloudStatus.style.color = '#e53e3e';
+                cloudStatus.innerText = '⚠️ 本機已記錄成功（但雲端同步失敗，請檢查網路連線）';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '交卷並同步雲端';
+            }
+        }
+
+        function saveRecord(record) {
+            let records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
+            records.unshift(record);
+            localStorage.setItem('senior_quiz_records', JSON.stringify(records));
+        }
+
+        function renderRecords() {
+            const records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
+            const tbody = document.getElementById('recordList');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="color: #a0aec0; padding: 15px;">尚無測驗紀錄</td></tr>';
+                return;
+            }
+
+            records.forEach(r => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${r.time}</td>
+                    <td><strong>${r.name}</strong></td>
+                    <td>${r.org}</td>
+                    <td>${r.correctCount} / 25</td>
+                    <td style="font-weight: bold; color: var(--primary-color);">${r.score} 分</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function clearRecords() {
+            if (confirm('確定要清空本機的所有課前測驗成績紀錄嗎？（不影響已上傳至雲端的紀錄）')) {
+                localStorage.removeItem('senior_quiz_records');
+                renderRecords();
+            }
+        }
+
+        function exportToCSV() {
+            const records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
+            if (records.length === 0) {
+                alert('目前尚無任何成績紀錄可供匯出！');
+                return;
+            }
+
+            let csvContent = "\uFEFF測驗時間,學員姓名,服務單位/學號,答對題數,課前成績\n";
+            records.forEach(r => {
+                csvContent += `"${r.time}","${r.name}","${r.org}","${r.correctCount}/25","${r.score}"\n`;
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', `課前測驗成績名冊_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function resetQuiz() {
+            document.getElementById('quizForm').reset();
+            document.getElementById('studentName').value = '';
+            document.getElementById('studentOrg').value = '';
+            document.getElementById('resultBanner').style.display = 'none';
+            document.getElementById('scoreText').innerText = '請填寫姓名並完成題目後交卷';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 頁面載入完成後自動載入題庫
+        document.addEventListener('DOMContentLoaded', renderQuiz);
     </script>
 </body>
 </html>
