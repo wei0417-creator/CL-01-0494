@@ -15,6 +15,8 @@
             --text-light: #666666;
             --white: #ffffff;
             --border-color: #e0e0e0;
+            --success-color: #38a169;
+            --error-color: #e53e3e;
         }
 
         * {
@@ -64,12 +66,14 @@
         nav {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 5px;
         }
 
         nav a {
             text-decoration: none;
             color: var(--text-dark);
-            margin-left: 1.5rem;
+            margin-left: 1rem;
             font-weight: 500;
             transition: color 0.3s;
             cursor: pointer;
@@ -90,6 +94,19 @@
 
         .nav-btn-quiz:hover {
             background-color: var(--accent-hover);
+        }
+
+        .nav-btn-postquiz {
+            background-color: var(--primary-color);
+            color: var(--white) !important;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .nav-btn-postquiz:hover {
+            background-color: var(--primary-hover);
         }
 
         /* 頁面切換控制 */
@@ -427,7 +444,7 @@
             background-color: var(--primary-hover);
         }
 
-        /* ==================== 課前測驗子頁面專用樣式 ==================== */
+        /* ==================== 測驗子頁面專用樣式 ==================== */
         .quiz-wrapper {
             max-width: 900px;
             margin: 2rem auto;
@@ -528,6 +545,17 @@
             padding: 20px;
             margin-bottom: 25px;
             background: #fff;
+            transition: all 0.2s ease;
+        }
+
+        .question-card.correct {
+            border-left: 6px solid var(--success-color);
+            background-color: #f0fff4;
+        }
+
+        .question-card.incorrect {
+            border-left: 6px solid var(--error-color);
+            background-color: #fff5f5;
         }
 
         .question-title {
@@ -561,6 +589,35 @@
         .option-label input[type="radio"] {
             margin-right: 12px;
             accent-color: var(--primary-color);
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 15px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .badge-correct {
+            background-color: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-incorrect {
+            background-color: #fed7d7;
+            color: #742a2a;
         }
 
         .sticky-footer {
@@ -682,8 +739,11 @@
                 flex-direction: column;
                 gap: 1rem;
             }
+            nav {
+                justify-content: center;
+            }
             nav a {
-                margin: 0 0.4rem;
+                margin: 0 0.3rem;
             }
             .hero h1 {
                 font-size: 1.8rem;
@@ -718,6 +778,7 @@
                 <a onclick="switchPage('main'); scrollToSection('outline');">課程大綱</a>
                 <a onclick="switchPage('main'); scrollToSection('register');">線上報名</a>
                 <a onclick="switchPage('quiz')" class="nav-btn-quiz">📝 課前測驗</a>
+                <a onclick="switchPage('postquiz')" class="nav-btn-postquiz">🎯 課後測驗</a>
             </nav>
         </div>
     </header>
@@ -740,6 +801,7 @@
             <div class="hero-btn-group">
                 <a href="#register" class="btn">立即報名回訓</a>
                 <button type="button" class="btn btn-outline-white" onclick="switchPage('quiz')">進行課前測驗</button>
+                <button type="button" class="btn btn-outline-white" onclick="switchPage('postquiz')">進行課後測驗</button>
             </div>
         </div>
 
@@ -942,7 +1004,7 @@
         </section>
     </div>
 
-    <!-- ==================== 2. 子頁面：學前測驗與成績紀錄系統 ==================== -->
+    <!-- ==================== 2. 子頁面：課前測驗系統 ==================== -->
     <div id="quizPageView" class="page-view hidden">
         <div class="quiz-wrapper">
             <div class="quiz-header-bar">
@@ -955,7 +1017,6 @@
                 <p>請先填寫真實姓名與單位，交卷後系統將自動計算成績並即時同步記錄至 Google 雲端試算表（共 25 題，滿分 100 分）</p>
             </header>
 
-            <!-- 學員基本資料填寫區 -->
             <div class="student-info-card">
                 <div class="input-group">
                     <label for="studentName">學員姓名 <span style="color:red;">*</span></label>
@@ -967,7 +1028,6 @@
                 </div>
             </div>
 
-            <!-- 測驗完成結果看板 -->
             <div id="resultBanner" class="result-banner">
                 <h2>課前測驗已完成</h2>
                 <div id="bannerName" style="font-size: 18px; color: var(--text-dark); margin-top: 5px;"></div>
@@ -988,7 +1048,6 @@
                 </div>
             </form>
 
-            <!-- 課前成績名冊 -->
             <div class="record-table-container">
                 <h3>
                     <span>課前測驗成績名冊（本機已記錄）</span>
@@ -1007,9 +1066,75 @@
                             <th>課前成績</th>
                         </tr>
                     </thead>
-                    <tbody id="recordList">
-                        <!-- 動態注入成績紀錄 -->
-                    </tbody>
+                    <tbody id="recordList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== 3. 子頁面：課後測驗系統（含對錯與解析） ==================== -->
+    <div id="postQuizPageView" class="page-view hidden">
+        <div class="quiz-wrapper">
+            <div class="quiz-header-bar">
+                <button type="button" class="btn-back" onclick="switchPage('main')">← 返回課程首頁</button>
+                <div style="font-weight: bold; color: var(--primary-color);">模組課後專業評量（含即時解析）</div>
+            </div>
+
+            <header style="border-bottom: none; padding-bottom: 0; margin-bottom: 20px;">
+                <h1 style="font-size: 24px;">銀髮族差異化運動指導實務 課後評量測驗</h1>
+                <p>完成課程後進行測驗，交卷後將**即時顯示每題對錯與詳細解析**，並同步紀錄至雲端硬碟（共 25 題）</p>
+            </header>
+
+            <div class="student-info-card">
+                <div class="input-group">
+                    <label for="postStudentName">學員姓名 <span style="color:red;">*</span></label>
+                    <input type="text" id="postStudentName" placeholder="請輸入您的真實姓名" required>
+                </div>
+                <div class="input-group">
+                    <label for="postStudentOrg">服務單位 / 學號（選填）</label>
+                    <input type="text" id="postStudentOrg" placeholder="請輸入所屬據點、單位或學號">
+                </div>
+            </div>
+
+            <div id="postResultBanner" class="result-banner">
+                <h2>課後測驗已完成</h2>
+                <div id="postBannerName" style="font-size: 18px; color: var(--text-dark); margin-top: 5px;"></div>
+                <div id="postBannerScore" class="score-highlight"></div>
+                <div id="postBannerDetail" style="font-size: 14px; color: var(--text-light);"></div>
+                <div id="postCloudStatus" style="margin-top: 10px; font-weight: bold; font-size: 13px;"></div>
+            </div>
+
+            <form id="postQuizForm">
+                <div id="postQuizContainer"></div>
+
+                <div class="sticky-footer">
+                    <div id="postScoreText" class="score-display-text">請填寫姓名並完成題目後交卷看解析</div>
+                    <div>
+                        <button type="button" id="submitPostQuizBtn" class="btn-custom btn-primary-quiz" onclick="submitPostQuiz()">交卷看對錯與解析</button>
+                        <button type="button" class="btn-custom btn-gray-quiz" onclick="resetPostQuiz()">重新測驗</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="record-table-container">
+                <h3>
+                    <span>課後測驗成績名冊（本機已記錄）</span>
+                    <div>
+                        <button type="button" class="btn-custom btn-secondary-quiz" onclick="exportPostCSV()" style="padding: 6px 14px; font-size: 13px;">匯出 CSV 報表</button>
+                        <button type="button" class="btn-custom btn-danger-quiz" onclick="clearPostRecords()">清空名冊</button>
+                    </div>
+                </h3>
+                <table id="postRecordTable">
+                    <thead>
+                        <tr>
+                            <th>測驗時間</th>
+                            <th>學員姓名</th>
+                            <th>服務單位/學號</th>
+                            <th>答對題數</th>
+                            <th>課後成績</th>
+                        </tr>
+                    </thead>
+                    <tbody id="postRecordList"></tbody>
                 </table>
             </div>
         </div>
@@ -1023,23 +1148,25 @@
 
     <!-- JavaScript 業務邏輯 -->
     <script>
-        /* 1. Google Apps Script Web App 端點 URL */
         const GAS_URL = 'https://script.google.com/macros/s/AKfycbweEd3EwkpCqns-Qjvy5rqkAqRg428qA-ONeVFHegs1uGZej3QcVh9y9HMrut9R-yXADw/exec';
 
-        /* 2. 頁面導覽與切換 */
         function switchPage(page) {
             const mainPage = document.getElementById('mainPageView');
             const quizPage = document.getElementById('quizPageView');
+            const postQuizPage = document.getElementById('postQuizPageView');
+
+            mainPage.classList.add('hidden');
+            quizPage.classList.add('hidden');
+            postQuizPage.classList.add('hidden');
 
             if (page === 'quiz') {
-                mainPage.classList.add('hidden');
                 quizPage.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (page === 'postquiz') {
+                postQuizPage.classList.remove('hidden');
             } else {
-                quizPage.classList.add('hidden');
                 mainPage.classList.remove('hidden');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function scrollToSection(id) {
@@ -1049,10 +1176,8 @@
             }
         }
 
-        /* 3. 報名表單串接 Google Apps Script */
         async function handleSubmit(event) {
             event.preventDefault();
-            
             const submitBtn = event.target.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
             submitBtn.innerText = '資料傳送中...';
@@ -1072,30 +1197,25 @@
             try {
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
-                    },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify(formData)
                 });
-
                 const result = await response.json();
-
                 if (result.result === 'success') {
-                    alert(`感謝 ${formData.name} 指導員/學員報名！\n您已成功預約「8/31 銀髮族差異化運動指導實務（地點：護理師公會教室）」。\n選擇方案：${formData.feeDiscount}\n報名資料已成功傳送！提醒您記得將三場示範紀錄單上傳至雲端資料夾喔！`);
+                    alert(`感謝 ${formData.name} 報名成功！`);
                     document.getElementById('enrollmentForm').reset();
                 } else {
-                    alert('報名失敗：' + (result.message || '請稍後再試或聯繫承辦人員。'));
+                    alert('報名失敗：' + (result.message || '請稍後再試'));
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('資料傳送失敗，請確認網路連線狀況！');
+                alert('資料傳送失敗，請確認網路連線！');
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = '送出回訓報名';
             }
         }
 
-        /* 4. 課前 25 題測驗題庫 */
+        /* 25 題測驗資料庫（含詳解與來源頁碼） */
         const quizData = [
             {
                 id: 1,
@@ -1106,7 +1226,9 @@
                     "環境障礙 → 疾病惡化 → 心理退化",
                     "功能受限 → 認知障礙 → 生理衰退"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 5、8 頁",
+                explanation: "Nagi失能模型路徑為：疾病 → 功能障礙 (Impairment) → 功能限制 (Functional limitation) → 失能 (Disability)。"
             },
             {
                 id: 2,
@@ -1117,7 +1239,9 @@
                     "休息與訓練時的血壓 (BP) 以及反應時間",
                     "肌肉力量與關節柔軟度"
                 ],
-                answer: 2
+                answer: 2,
+                source: "第 6 頁",
+                explanation: "老化時最大心跳率、最大攝氧量與肌力下降；而休息與訓練時血壓、反應時間與恢復時間則會增加。"
             },
             {
                 id: 3,
@@ -1128,7 +1252,9 @@
                     "第三階段：超補償 (Supercompensation)",
                     "第四階段：衰退 (Involution)"
                 ],
-                answer: 2
+                answer: 2,
+                source: "第 14 頁",
+                explanation: "訓練刺激後經歷疲勞（I）、補償（II），達到高於基準線的超補償（III）。"
             },
             {
                 id: 4,
@@ -1139,7 +1265,9 @@
                     "功能性前伸測試 (Functional reach) 距離小於 6 英吋（15.2 公分）",
                     "起立行走測試 (TUG) 所需時間為 10.2 秒"
                 ],
-                answer: 2
+                answer: 2,
+                source: "第 9、10 頁",
+                explanation: "功能性前伸距離 < 6 英吋 (15.2 公分) 代表跌倒高風險。"
             },
             {
                 id: 5,
@@ -1150,7 +1278,9 @@
                     "> 13.5 秒",
                     "> 20.0 秒"
                 ],
-                answer: 2
+                answer: 2,
+                source: "第 9、10 頁",
+                explanation: "TUG 測試超過 13.5 秒為虛弱高齡者行動力低下及跌倒風險升高的重要臨界指標。"
             },
             {
                 id: 6,
@@ -1161,7 +1291,9 @@
                     "女性 18 次、男性 20 次",
                     "女性 8 次、男性 9 次"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 11 頁",
+                explanation: "70-74 歲年齡層維持身體獨立性的參考標準為：女性 14 次、男性 15 次。"
             },
             {
                 id: 7,
@@ -1172,7 +1304,9 @@
                     "60%-80% 1-RM，3 組 8-12 次",
                     "75%-85% 1-RM，2 組 6-8 次"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 16 頁",
+                explanation: "高齡阻力訓練初學者建議從低強度（40%-50% 1-RM）開始，進行 1 組 10-15 次。"
             },
             {
                 id: 8,
@@ -1183,7 +1317,9 @@
                     "有氧運動頻率應強制每日單次持續 60 分鐘不得中斷",
                     "伸展運動應每週僅能執行 1 次以避免痙攣"
                 ],
-                answer: 0
+                answer: 0,
+                source: "第 17 頁",
+                explanation: "中風患者若無心肺運動測試數據，強度建議控制在 RPE 11-14，並多利用固定器械確保安全。"
             },
             {
                 id: 9,
@@ -1194,7 +1330,9 @@
                     "阻力訓練僅能使用自身體重，不可使用彈力帶或器械",
                     "為避免血糖波動，應完全禁止高強度間歇訓練（HIIT）"
                 ],
-                answer: 0
+                answer: 0,
+                source: "第 18 頁",
+                explanation: "糖尿病每週有氧 3-7 天，連續不運動日不超過 2 天；並鼓勵搭配非結構化日常活動。"
             },
             {
                 id: 10,
@@ -1205,7 +1343,9 @@
                     "收縮壓只要超過 160 mmHg 就必須永久終止所有運動",
                     "高血壓患者阻力運動頻率必須達到每週 7 天"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 20、39 頁",
+                explanation: "高血壓者嚴禁閉氣（Valsalva 動作），有氧強度以中等強度（40%-59% VO₂R / RPE 12-13）為宜。"
             },
             {
                 id: 11,
@@ -1216,7 +1356,9 @@
                     "有氧運動優先選擇低關節壓力的型態（如走路、水中運動、腳踏車）",
                     "阻力訓練強度必須直接設定在 90% 1-RM 以上"
                 ],
-                answer: 2
+                answer: 2,
+                source: "第 21、40 頁",
+                explanation: "關節炎患者應選擇低關節壓力活動（水中運動、自行車、步行）。"
             },
             {
                 id: 12,
@@ -1227,7 +1369,9 @@
                     "完全不可進行任何負重活動，僅能臥床進行靜態伸展",
                     "每週阻力訓練必須連續進行 5 天且不得安排休息日"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 23、40 頁",
+                explanation: "骨質疏鬆長者適合負重有氧與肌力訓練，但需嚴格避免「高衝擊與脊椎前屈/旋轉」。"
             },
             {
                 id: 13,
@@ -1238,7 +1382,9 @@
                     "完全不需指令簡化，直接給予多步驟複合動作指令",
                     "運動過程中不需要助教或視覺提示"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 24 頁",
+                explanation: "失智症長者應避免自由重量（防止砸落），改採固定器材、彈力帶或自身體重。"
             },
             {
                 id: 14,
@@ -1249,7 +1395,9 @@
                     "大重量單一關節極限等長收縮",
                     "高衝擊爆發力折返跑"
                 ],
-                answer: 0
+                answer: 0,
+                source: "第 25、40 頁",
+                explanation: "帕金森氏症需強調神經動作訓練（大動作幅度、平衡、雙重任務）。"
             },
             {
                 id: 15,
@@ -1260,7 +1408,9 @@
                     "以競技性高強度間歇跑為主",
                     "僅能進行被動關節活動度維持，不可有主動肌力收縮"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 26 頁",
+                explanation: "需要協助族群應以坐姿或有穩固支撐的練習為主，優先確保安全。"
             },
             {
                 id: 16,
@@ -1271,7 +1421,9 @@
                     "橫狀面 (Transverse Plane)",
                     "垂直軸面 (Vertical Axis)"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 29 頁",
+                explanation: "額狀面（冠狀面）動作包含內收、外展及側向移動。"
             },
             {
                 id: 17,
@@ -1282,7 +1434,9 @@
                     "縮短動作力臂長度",
                     "從單一任務增加為結合認知或視覺干擾的「雙重任務（Dual-task）」"
                 ],
-                answer: 3
+                answer: 3,
+                source: "第 30、31 頁",
+                explanation: "增加雙重任務或不穩定面等均屬於進階設計。"
             },
             {
                 id: 18,
@@ -1293,7 +1447,9 @@
                     "忽略動作力線偏移，只要求學員加快動作速度",
                     "完全不示範正確動作，僅透過大聲口令喝斥"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 33 頁",
+                explanation: "動作修正應先修改最主要的關鍵錯誤，並按照先後順序逐步修正。"
             },
             {
                 id: 19,
@@ -1304,7 +1460,9 @@
                     "主要訓練 55 分鐘、不需熱身與收操",
                     "熱身 30 分鐘、主要訓練 30 分鐘、無收操"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 37 頁",
+                explanation: "標準長者運動課表建議：熱身 10 分鐘、主要訓練 25-35 分鐘、收操 5-10 分鐘。"
             },
             {
                 id: 20,
@@ -1315,7 +1473,9 @@
                     "僅在深呼吸或打嗝時誘發的局部刺痛",
                     "用手指按壓肋骨特定點會引發劇烈壓痛"
                 ],
-                answer: 0
+                answer: 0,
+                source: "第 41 頁",
+                explanation: "缺血性心絞痛特徵為胸骨下壓迫感、收縮感，常放射至肩膀、手臂、頸部或下巴。"
             },
             {
                 id: 21,
@@ -1326,7 +1486,9 @@
                     "急性骨折",
                     "周邊神經良性病變"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 42 頁",
+                explanation: "雙側踝部水腫常見於充血性心衰竭或雙側靜脈功能不全。"
             },
             {
                 id: 22,
@@ -1337,7 +1499,9 @@
                     "運動進行 10 分鐘後出汗且自覺微喘（RPE 12）",
                     "收縮壓由 120 mmHg 上升至 145 mmHg"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 45 頁",
+                explanation: "運動中負荷增加時收縮壓異常下降 ≥10 mmHg 為絕對停止指標。"
             },
             {
                 id: 23,
@@ -1348,7 +1512,9 @@
                     "轉移風險 (Risk transference)",
                     "降低風險 (Risk reduction)"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 44 頁",
+                explanation: "風險管理四大策略中，「直接放棄或停止高風險行為」屬於避免風險（Avoidance）。"
             },
             {
                 id: 24,
@@ -1359,7 +1525,9 @@
                     "使用深奧的解剖學術語向長者詳細解說肌肉起迄點",
                     "遇到學員做錯時立即給予嚴厲指責以加深印象"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 47、48 頁",
+                explanation: "針對認知受損長者，溝通應簡化語言、單一步驟分解並多給予視覺手勢提示。"
             },
             {
                 id: 25,
@@ -1370,21 +1538,21 @@
                     "每 3 年追評一次",
                     "終身不需再次評估"
                 ],
-                answer: 1
+                answer: 1,
+                source: "第 53 頁",
+                explanation: "長者功能性體適能成效，建議至少每 3-6 個月進行一次長期追蹤評估。"
             }
         ];
 
-        /* 5. 測驗渲染、成績計算與同步至 Google 雲端試算表 */
+        /* 渲染課前測驗 */
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
             if (!container) return;
             container.innerHTML = '';
-
             quizData.forEach((q, index) => {
                 const card = document.createElement('div');
                 card.className = 'question-card';
                 card.id = `qCard_${index}`;
-
                 let optionsHtml = '';
                 q.options.forEach((opt, optIndex) => {
                     optionsHtml += `
@@ -1394,19 +1562,46 @@
                         </label>
                     `;
                 });
+                card.innerHTML = `<div class="question-title">${q.id}. ${q.question}</div><div class="options-group">${optionsHtml}</div>`;
+                container.appendChild(card);
+            });
+            renderRecords();
+        }
 
+        /* 渲染課後測驗（含解析容器） */
+        function renderPostQuiz() {
+            const container = document.getElementById('postQuizContainer');
+            if (!container) return;
+            container.innerHTML = '';
+            quizData.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `postQCard_${index}`;
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += `
+                        <label class="option-label" id="postLabel_${index}_${optIndex}">
+                            <input type="radio" name="post_q_${index}" value="${optIndex}">
+                            <span>${String.fromCharCode(65 + optIndex)}. ${opt}</span>
+                        </label>
+                    `;
+                });
                 card.innerHTML = `
                     <div class="question-title">${q.id}. ${q.question}</div>
-                    <div class="options-group">
-                        ${optionsHtml}
+                    <div class="options-group">${optionsHtml}</div>
+                    <div class="explanation-box" id="postExp_${index}">
+                        <div id="postBadge_${index}"></div>
+                        <div><strong>【標準答案】</strong>：${String.fromCharCode(65 + q.answer)}</div>
+                        <div><strong>【講義對照】</strong>：${q.source}</div>
+                        <div><strong>【觀念詳解】</strong>：${q.explanation}</div>
                     </div>
                 `;
                 container.appendChild(card);
             });
-
-            renderRecords();
+            renderPostRecords();
         }
 
+        /* 提交課前測驗 */
         async function submitQuiz() {
             const nameInput = document.getElementById('studentName');
             const name = nameInput.value.trim();
@@ -1426,142 +1621,208 @@
                 const selected = document.querySelector(`input[name="q_${index}"]:checked`);
                 if (selected) {
                     answeredCount++;
-                    if (parseInt(selected.value) === q.answer) {
-                        score++;
-                    }
+                    if (parseInt(selected.value) === q.answer) score++;
                 }
             });
 
-            if (answeredCount < total) {
-                if (!confirm(`您尚有 ${total - answeredCount} 題未作答，確定要現在交卷計分嗎？`)) {
-                    return;
-                }
-            }
-
             const finalScore = Math.round((score / total) * 100);
-            const now = new Date();
-            const timeStr = `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            const timeStr = getFormattedDate();
 
-            // 本機儲存
-            const newRecord = {
-                time: timeStr,
-                name: name,
-                org: org,
-                correctCount: score,
-                score: finalScore
-            };
-            saveRecord(newRecord);
+            saveRecord({ time: timeStr, name, org, correctCount: score, score: finalScore }, 'senior_quiz_records');
 
-            // 更新結果面板
             document.getElementById('bannerName').innerText = `受測學員：${name}（${org}）`;
             document.getElementById('bannerScore').innerText = `${finalScore} 分`;
-            document.getElementById('bannerDetail').innerText = `答對題數：${score} / ${total} 題 ｜ 作答題數：${answeredCount} / ${total} 題 ｜ 完成時間：${timeStr}`;
+            document.getElementById('bannerDetail').innerText = `答對題數：${score} / ${total} 題 ｜ 完成時間：${timeStr}`;
             
             const cloudStatus = document.getElementById('cloudStatus');
             cloudStatus.style.color = '#FF9800';
             cloudStatus.innerText = '☁️ 成績資料同步寫入雲端硬碟中...';
             document.getElementById('resultBanner').style.display = 'block';
-
             document.getElementById('scoreText').innerText = `【${name}】課前成績：${finalScore} 分`;
             renderRecords();
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
-            // 禁用按鈕防止重複提交
             const submitBtn = document.getElementById('submitQuizBtn');
             submitBtn.disabled = true;
             submitBtn.innerText = '成績同步中...';
 
-            // 同步上傳至 Google Apps Script
-            const payload = {
-                type: 'quiz_result',
-                time: timeStr,
-                name: name,
-                organization: org,
-                correctCount: `${score}/${total}`,
-                score: finalScore
-            };
-
             try {
                 const response = await fetch(GAS_URL, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
-                    },
-                    body: JSON.stringify(payload)
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ type: 'quiz_result', subType: 'pre', time: timeStr, name, organization: org, correctCount: `${score}/${total}`, score: finalScore })
                 });
                 const result = await response.json();
-
                 if (result.result === 'success') {
                     cloudStatus.style.color = '#2E7D32';
-                    cloudStatus.innerText = '✅ 成績已成功登錄至 Google 雲端試算表！';
+                    cloudStatus.innerText = '✅ 課前成績已成功登錄至 Google 雲端試算表！';
                 } else {
                     cloudStatus.style.color = '#e53e3e';
-                    cloudStatus.innerText = '⚠️ 本機已記錄，但雲端回傳訊息：' + (result.message || '請確認試算表權限');
+                    cloudStatus.innerText = '⚠️ 本機已記錄，雲端回傳：' + (result.message || '');
                 }
             } catch (err) {
-                console.error('Quiz Cloud Sync Error:', err);
                 cloudStatus.style.color = '#e53e3e';
-                cloudStatus.innerText = '⚠️ 本機已記錄成功（但雲端同步失敗，請檢查網路連線）';
+                cloudStatus.innerText = '⚠️ 本機已記錄成功（雲端同步失敗，請檢查網路）';
             } finally {
                 submitBtn.disabled = false;
                 submitBtn.innerText = '交卷並同步雲端';
             }
         }
 
-        function saveRecord(record) {
-            let records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
+        /* 提交課後測驗（含對錯與即時解析） */
+        async function submitPostQuiz() {
+            const nameInput = document.getElementById('postStudentName');
+            const name = nameInput.value.trim();
+            const org = document.getElementById('postStudentOrg').value.trim() || '未填寫';
+
+            if (!name) {
+                alert('請先填寫上方「學員姓名」後再進行交卷！');
+                nameInput.focus();
+                return;
+            }
+
+            let score = 0;
+            let answeredCount = 0;
+            const total = quizData.length;
+
+            quizData.forEach((q, index) => {
+                const card = document.getElementById(`postQCard_${index}`);
+                const expBox = document.getElementById(`postExp_${index}`);
+                const badge = document.getElementById(`postBadge_${index}`);
+                const selected = document.querySelector(`input[name="post_q_${index}"]:checked`);
+
+                card.classList.remove('correct', 'incorrect');
+                expBox.style.display = 'block';
+
+                if (selected) {
+                    answeredCount++;
+                    const userAns = parseInt(selected.value);
+                    if (userAns === q.answer) {
+                        score++;
+                        card.classList.add('correct');
+                        badge.className = 'badge badge-correct';
+                        badge.innerText = '✓ 答對了！';
+                    } else {
+                        card.classList.add('incorrect');
+                        badge.className = 'badge badge-incorrect';
+                        badge.innerText = `✗ 答錯了（您的選擇：${String.fromCharCode(65 + userAns)}）`;
+                    }
+                } else {
+                    card.classList.add('incorrect');
+                    badge.className = 'badge badge-incorrect';
+                    badge.innerText = '⚠ 未作答';
+                }
+            });
+
+            const finalScore = Math.round((score / total) * 100);
+            const timeStr = getFormattedDate();
+
+            saveRecord({ time: timeStr, name, org, correctCount: score, score: finalScore }, 'senior_postquiz_records');
+
+            document.getElementById('postBannerName').innerText = `受測學員：${name}（${org}）`;
+            document.getElementById('postBannerScore').innerText = `${finalScore} 分`;
+            document.getElementById('postBannerDetail').innerText = `答對題數：${score} / ${total} 題 ｜ 完成時間：${timeStr}`;
+            
+            const cloudStatus = document.getElementById('postCloudStatus');
+            cloudStatus.style.color = '#FF9800';
+            cloudStatus.innerText = '☁️ 課後成績資料同步寫入雲端硬碟中...';
+            document.getElementById('postResultBanner').style.display = 'block';
+            document.getElementById('postScoreText').innerText = `【${name}】課後成績：${finalScore} 分（下方已展開詳細解析）`;
+            renderPostRecords();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            const submitBtn = document.getElementById('submitPostQuizBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerText = '成績同步中...';
+
+            try {
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ type: 'quiz_result', subType: 'post', time: timeStr, name, organization: org, correctCount: `${score}/${total}`, score: finalScore })
+                });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    cloudStatus.style.color = '#2E7D32';
+                    cloudStatus.innerText = '✅ 課後成績已成功登錄至 Google 雲端試算表！';
+                } else {
+                    cloudStatus.style.color = '#e53e3e';
+                    cloudStatus.innerText = '⚠️ 本機已記錄，雲端回傳：' + (result.message || '');
+                }
+            } catch (err) {
+                cloudStatus.style.color = '#e53e3e';
+                cloudStatus.innerText = '⚠️ 本機已記錄成功（雲端同步失敗，請檢查網路）';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerText = '交卷看對錯與解析';
+            }
+        }
+
+        function getFormattedDate() {
+            const now = new Date();
+            return `${now.getFullYear()}/${(now.getMonth()+1).toString().padStart(2,'0')}/${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+        }
+
+        function saveRecord(record, storageKey) {
+            let records = JSON.parse(localStorage.getItem(storageKey) || '[]');
             records.unshift(record);
-            localStorage.setItem('senior_quiz_records', JSON.stringify(records));
+            localStorage.setItem(storageKey, JSON.stringify(records));
         }
 
         function renderRecords() {
             const records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
             const tbody = document.getElementById('recordList');
             if (!tbody) return;
-            tbody.innerHTML = '';
-
-            if (records.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="color: #a0aec0; padding: 15px;">尚無測驗紀錄</td></tr>';
-                return;
-            }
-
+            tbody.innerHTML = records.length === 0 ? '<tr><td colspan="5" style="color: #a0aec0; padding: 15px;">尚無測驗紀錄</td></tr>' : '';
             records.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${r.time}</td>
-                    <td><strong>${r.name}</strong></td>
-                    <td>${r.org}</td>
-                    <td>${r.correctCount} / 25</td>
-                    <td style="font-weight: bold; color: var(--primary-color);">${r.score} 分</td>
-                `;
-                tbody.appendChild(tr);
+                tbody.innerHTML += `<tr><td>${r.time}</td><td><strong>${r.name}</strong></td><td>${r.org}</td><td>${r.correctCount} / 25</td><td style="font-weight: bold; color: var(--primary-color);">${r.score} 分</td></tr>`;
+            });
+        }
+
+        function renderPostRecords() {
+            const records = JSON.parse(localStorage.getItem('senior_postquiz_records') || '[]');
+            const tbody = document.getElementById('postRecordList');
+            if (!tbody) return;
+            tbody.innerHTML = records.length === 0 ? '<tr><td colspan="5" style="color: #a0aec0; padding: 15px;">尚無測驗紀錄</td></tr>' : '';
+            records.forEach(r => {
+                tbody.innerHTML += `<tr><td>${r.time}</td><td><strong>${r.name}</strong></td><td>${r.org}</td><td>${r.correctCount} / 25</td><td style="font-weight: bold; color: var(--primary-color);">${r.score} 分</td></tr>`;
             });
         }
 
         function clearRecords() {
-            if (confirm('確定要清空本機的所有課前測驗成績紀錄嗎？（不影響已上傳至雲端的紀錄）')) {
+            if (confirm('確定要清空本機的所有課前測驗紀錄嗎？')) {
                 localStorage.removeItem('senior_quiz_records');
                 renderRecords();
             }
         }
 
-        function exportToCSV() {
-            const records = JSON.parse(localStorage.getItem('senior_quiz_records') || '[]');
-            if (records.length === 0) {
-                alert('目前尚無任何成績紀錄可供匯出！');
-                return;
+        function clearPostRecords() {
+            if (confirm('確定要清空本機的所有課後測驗紀錄嗎？')) {
+                localStorage.removeItem('senior_postquiz_records');
+                renderPostRecords();
             }
+        }
 
-            let csvContent = "\uFEFF測驗時間,學員姓名,服務單位/學號,答對題數,課前成績\n";
+        function exportToCSV() {
+            exportCSVHelper('senior_quiz_records', '課前測驗成績名冊');
+        }
+
+        function exportPostCSV() {
+            exportCSVHelper('senior_postquiz_records', '課後測驗成績名冊');
+        }
+
+        function exportCSVHelper(key, fileNamePrefix) {
+            const records = JSON.parse(localStorage.getItem(key) || '[]');
+            if (records.length === 0) { alert('尚無成績可供匯出！'); return; }
+            let csvContent = "\uFEFF測驗時間,學員姓名,服務單位/學號,答對題數,成績\n";
             records.forEach(r => {
                 csvContent += `"${r.time}","${r.name}","${r.org}","${r.correctCount}/25","${r.score}"\n`;
             });
-
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.setAttribute('href', url);
-            link.setAttribute('download', `課前測驗成績名冊_${new Date().toISOString().slice(0,10)}.csv`);
+            link.setAttribute('download', `${fileNamePrefix}_${new Date().toISOString().slice(0,10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -1569,15 +1830,26 @@
 
         function resetQuiz() {
             document.getElementById('quizForm').reset();
-            document.getElementById('studentName').value = '';
-            document.getElementById('studentOrg').value = '';
             document.getElementById('resultBanner').style.display = 'none';
-            document.getElementById('scoreText').innerText = '請填寫姓名並完成題目後交卷';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 頁面載入完成後自動載入題庫
-        document.addEventListener('DOMContentLoaded', renderQuiz);
+        function resetPostQuiz() {
+            document.getElementById('postQuizForm').reset();
+            document.getElementById('postResultBanner').style.display = 'none';
+            quizData.forEach((_, index) => {
+                const card = document.getElementById(`postQCard_${index}`);
+                const expBox = document.getElementById(`postExp_${index}`);
+                card.classList.remove('correct', 'incorrect');
+                expBox.style.display = 'none';
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderQuiz();
+            renderPostQuiz();
+        });
     </script>
 </body>
 </html>
